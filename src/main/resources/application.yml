@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    url: jdbc:postgresql://92.53.115.27:5432/default_db
+    username: gen_user
+    password: MGCCpdG4oidy
+
+  thymeleaf:
+    check-template-location: false
+server:
+  port: 8080

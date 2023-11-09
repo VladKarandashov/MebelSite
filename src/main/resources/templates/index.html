@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body>
+
+<!--Navigation bar-->
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>Добро пожаловать на сайт "Мебель"!</h1>
+<br>
+<p>
+    Используйте меню, расположенное в верхней части сайта, для работы с ним. <br>
+    На сайте доступна работа с базой данных и предоставлена информация о базе данных и предметной области. <br>
+    Обратите внимание, что для добавления данных вам необходимо будет авторизоваться <br>
+    (войти в учетную запись или создать новую, если у вас нет учетной записи). <br>
+    Приятной работы!
+</p>
+
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+
+</body>
+</html>

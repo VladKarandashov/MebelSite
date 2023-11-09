@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактор</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<table>
+    <tr>
+        <td>
+            <table DIR=LTR BORDER>
+                <thead>
+                <tr>
+                    <th>Инструменты</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${firstId})}">
+                            <button id="flash-back" title="К первому">
+                                <img src="/img/flash-back.png" width="30" alt="к первому"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${prevId})}">
+                            <button id="back" title="Назад">
+                                <img src="/img/back.png" width="30" alt="предыдущий"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <button title="Сохранить" id="save" onclick="onClickSave()">
+                            <img src="/img/save.png" width="30" alt="сохранить"/>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${nextId})}">
+                            <button title="Вперёд" id="forward">
+                                <img src="/img/forward.png" width="30" alt="следующий"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${lastId})}">
+                            <button title="К последнему" id="flash-forward">
+                                <img src="/img/flash-forward.png" width="30" alt="к последнему"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=0)}">
+                            <button id="new-product" class="carte">Новый продукт</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <button id="delete-product" class="carte" onclick="onClickDelete()">Удалить</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td style="text-align: center">
+                        <h1>Редактор мебели</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <p id="mebelID"><span th:text="${mebel.id}"></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="title">Название (с большой буквы или цифры)</label><br>
+                        <input id="title" title="начните с большой буквы или цифры" name="title"
+                               pattern="[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}" required type="text"
+                               th:field="${mebel.title}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="width">Ширина, см</label><br>
+                        <input id="width" name="width" type="number" required th:field="${mebel.width}" min="0" max="9999"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="height">Высота, см</label><br>
+                        <input id="height" name="height" type="number" required th:field="${mebel.height}" min="0" max="9999"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="length">Длина, см</label><br>
+                        <input id="length" name="length" type="number" required th:field="${mebel.length}" min="0" max="9999"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="productionTimeDays">Требуется дней на выпуск</label><br>
+                        <input id="productionTimeDays" name="productionTimeDays" type="number" th:field="${mebel.getProductionTimeDays()}" min="0" max="60" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="mebelType">Тип мебели</label><br>
+                        <select size="1" id="mebelType" name="mebelTypes">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="mebelType : ${mebelTypes}"
+                                    th:value="${mebelType.id}"
+                                    th:selected="${mebelType.id == mebel.mebelType.id}"
+                                    th:text="${mebelType.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/mebelType', 'mebelType')">+
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="color">Цвет</label><br>
+                        <select size="1" id="color" name="color">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="color : ${colors}"
+                                    th:value="${color.id}"
+                                    th:selected="${color.id == mebel.color.id}"
+                                    th:text="${color.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/color', 'color')">+
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="furnitureBrand">брэнд фурнитуры</label><br>
+                        <select size="1" id="furnitureBrand" name="furnitureBrand">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="furnitureBrand : ${furnitureBrands}"
+                                    th:value="${furnitureBrand.id}"
+                                    th:selected="${furnitureBrand.id == mebel.furnitureBrand.id}"
+                                    th:text="${furnitureBrand.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/furnitureBrand', 'furnitureBrand')">+
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="furnitureType">тип фурнитуры</label><br>
+                        <select size="1" id="furnitureType" name="furnitureType">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="furnitureType : ${furnitureTypes}"
+                                    th:value="${furnitureType.id}"
+                                    th:selected="${furnitureType.id == mebel.furnitureType.id}"
+                                    th:text="${furnitureType.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/furnitureType', 'furnitureType')">+
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="material">тип фурнитуры</label><br>
+                        <select size="1" id="material" name="material">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="material : ${materials}"
+                                    th:value="${material.id}"
+                                    th:selected="${material.id == mebel.material.id}"
+                                    th:text="${material.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/material', 'material')">+
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+</body>
+<script>
+    async function onClickPlus(url, idSelect) {
+        let title = prompt("Введите новое значение (с большой буквы или цифры):");
+        if ((!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}$/.test(title)) || title === null || title === "") {
+            alert("Введите правильное значение (с большой буквы или цифры)")
+            return;
+        }
+        const res = await sendPostRequest(url, title);
+        console.log(res)
+        if (res == null) {
+            alert("Неправильное значение - ответ сервера")
+            return;
+        }
+        const select = document.getElementById(idSelect);
+        clearSelectExcept0(select);
+        addElementsToSelect(select, res)
+        if (idSelect === "selectOptions") select.value = "0";
+    }
+
+    function clearSelectExcept0(selectEl) {
+        const options = selectEl.querySelectorAll("option");
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value !== "0") {
+                options[i].remove();
+            }
+        }
+    }
+
+    function addElementsToSelect(selectEl, res) {
+        const myList = res.list
+        myList.forEach(function (element) {
+            const option = document.createElement("option");
+            option.value = element.id;
+            if (selectEl.id === "selectOptions") option.value = element.title
+            option.text = element.title;
+            if (res.selected.id === element.id) option.selected = true;
+            selectEl.add(option);
+        });
+    }
+
+    async function sendPostRequest(url, myTitle) {
+        console.log("Функция вызвана")
+        const data = {title: myTitle};
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                return json;
+            } else {
+                throw new Error('Response not OK');
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+</script>
+<script>
+    async function onClickDelete() {
+        const accept = confirm("Хотите удалить эту запись?");
+        if(accept===false) return;
+
+        const idElement = document.getElementById("productID");
+        const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
+        if (idValue === "0") return;
+        const data = {
+            id: idValue
+        };
+        const res = await sendDeleteRequest(data);
+        window.location.href = '/editor';
+    }
+    async function sendDeleteRequest(data) {
+        console.log("Функция удаления вызвана")
+        try {
+            const response = await fetch("/product/delete", {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                return json;
+            } else {
+                throw new Error('Response not OK');
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+</script>
+<script>
+    async function onClickSave() {
+        const accept = confirm("Хотите сохранить изменения?");
+        if(accept===false) return;
+
+        const idElement = document.getElementById("productID");
+        const titleElement = document.getElementById("title");
+        const weightElement = document.getElementById("weight");
+        const dateElement = document.getElementById("date");
+        const warrantyPeriodElement = document.getElementById("warrantyPeriod");
+
+        const productTypeElement = document.getElementById("productType");
+        const productLineElement = document.getElementById("productLine");
+        const deliveryTypeElement = document.getElementById("deliveryType");
+        const warrantyTypeElement = document.getElementById("warrantyType");
+
+        const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
+        const titleValue = titleElement.value
+        const weightValue = weightElement.value
+        const dateValue = dateElement.value
+        const warrantyPeriodValue = warrantyPeriodElement.value
+
+        const productTypeIdValue = productTypeElement.value
+        const productLineIdValue = productLineElement.value
+        const deliveryTypeIdValue = deliveryTypeElement.value
+        const warrantyTypeIdValue = warrantyTypeElement.value
+
+        let fieldError = false;
+        if(/[A-ZА-Я0-9]/.test(titleValue[0]) === false || titleValue === ''){
+            fieldError = true
+            titleElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            titleElement.className = ''
+        }
+        if(/^\d+(\.\d+)*$/.test(weightValue) === false || 0 > weightValue || weightValue > 50 || weightValue === ''){
+            fieldError = true
+            weightElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            weightElement.className = ''
+        }
+
+        if(0 > warrantyPeriodValue || warrantyPeriodValue > 50 || warrantyPeriodValue === ''){
+            fieldError = true
+            warrantyPeriodElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            warrantyPeriodElement.className = ''
+        }
+        if(dateValue === ''){
+            fieldError = true
+            dateElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            dateElement.className = ''
+        }
+
+        if(fieldError === true){
+            alert("Проверьте правильность ввода данных!")
+        }
+        else{
+            const data = {
+                id: idValue,
+                title: titleValue,
+                weight: weightValue,
+                date: dateValue,
+                warrantyPeriod: warrantyPeriodValue,
+
+                productType: productTypeIdValue,
+                productLine: productLineIdValue,
+                deliveryType: deliveryTypeIdValue,
+                warrantyType: warrantyTypeIdValue,
+            };
+
+            const res = await sendSaveRequest(data);
+
+            console.log(res)
+            if (res == null) {
+                alert("Возникла проблема с вашими полями")
+                return;
+            }
+            console.log("reboot")
+            window.location.href = '/editor/'+res.id;
+        }
+    }
+
+    async function sendSaveRequest(data) {
+        console.log("Функция сохранения вызвана")
+        try {
+            const response = await fetch("/product/save", {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                return json;
+            } else {
+                throw new Error('Response not OK');
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+</script>
+</html>
