@@ -1,6 +1,7 @@
 package com.example.mebelsite.model.repository;
 
 import com.example.mebelsite.model.entity.business.MebelEntity;
+import com.example.mebelsite.model.entity.business.MebelTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,6 @@ public interface MebelRepository extends JpaRepository<MebelEntity, Long> {
 
     @Query("SELECT MIN(id) FROM MebelEntity WHERE id > :myId")
     Long getNextId(@Param("myId") Long myId);
+
+    Long countByMebelType(MebelTypeEntity mebelType);
 }
