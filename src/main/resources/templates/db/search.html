@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<h1>Поиск</h1>
+<br>
+<table class="center" id="myTable">
+    <thead>
+    <tr>
+        <th>Категория</th>
+        <th>Поле выбора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form action="/search">
+        <tr>
+            <td><label for="mebelType">Тип мебели:</label></td>
+            <td>
+                <select id="mebelType" name="mebelType" onchange="this.form.submit()">
+                    <option th:value="0">Любой</option>
+                    <option th:each="mebelType : ${mebelTypes}"
+                            th:value="${mebelType.id}"
+                            th:selected="${mebelType.id == idMebelType}"
+                            th:text="${mebelType.title}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="color">Цвет:</label></td>
+            <td>
+                <select id="color" name="color" onchange="this.form.submit()">
+                    <option th:value="0">Любой</option>
+                    <option th:each="color : ${colors}"
+                            th:value="${color.id}"
+                            th:selected="${color.id == idColor}"
+                            th:text="${color.title}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="furnitureType">Тип фурнитуры:</label></td>
+            <td>
+                <select id="furnitureType" name="furnitureType" onchange="this.form.submit()">
+                    <option th:value="0">Любой</option>
+                    <option th:each="furnitureType : ${furnitureTypes}"
+                            th:value="${furnitureType.id}"
+                            th:selected="${furnitureType.id == idFurnitureType}"
+                            th:text="${furnitureType.title}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </form>
+    </tbody>
+</table>
+<br>
+<table DIR=LTR BORDER>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Ширина</th>
+        <th>Высота</th>
+        <th>Длина</th>
+        <th>Дней на изготовление</th>
+
+        <th>Тип мебели</th>
+        <th>Цвет</th>
+        <th>Производитель фурнитуры</th>
+        <th>Тип фурнитуры</th>
+        <th>Материал</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mebel : ${mebelList}">
+        <td th:text="${mebel.id}"></td>
+        <td th:text="${mebel.title}"></td>
+        <td th:text="${mebel.width}"></td>
+        <td th:text="${mebel.height}"></td>
+        <td th:text="${mebel.length}"></td>
+        <td th:text="${mebel.productionTimeDays}"></td>
+
+        <td th:text="${mebel.mebelType != null} ? ${mebel.mebelType.title} : '-'"></td>
+        <td th:text="${mebel.color != null} ? ${mebel.color.title} : '-'"></td>
+        <td th:text="${mebel.furnitureBrand != null} ? ${mebel.furnitureBrand.title} : '-'"></td>
+        <td th:text="${mebel.furnitureType != null} ? ${mebel.furnitureType.title} : '-'"></td>
+        <td th:text="${mebel.material != null} ? ${mebel.material.title} : '-'"></td>
+    </tr>
+    </tbody>
+</table>
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+</body>
+</html>
