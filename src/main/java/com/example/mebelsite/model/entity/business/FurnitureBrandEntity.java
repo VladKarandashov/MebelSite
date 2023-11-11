@@ -18,4 +18,8 @@ public class FurnitureBrandEntity {
     private Long id;
 
     private String title;
+
+    public FurnitureBrandEntity(String title) {
+        this.title = title;
+    }
 }

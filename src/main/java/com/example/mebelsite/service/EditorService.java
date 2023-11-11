@@ -21,11 +21,11 @@ public class EditorService {
     private final MaterialRepository materialRepository;
 
     public Long getFirstMebelId() {
-        return mebelRepository.findFirstRowId();
+        return mebelRepository.findFirstRowId().orElse(0L);
     }
 
     public Long getLastMebelId() {
-        return mebelRepository.findLastRowId();
+        return mebelRepository.findLastRowId().orElse(0L);
     }
 
     public Long getPreviousMebelId(Long id) {

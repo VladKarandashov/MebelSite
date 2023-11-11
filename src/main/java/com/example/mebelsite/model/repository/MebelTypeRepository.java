@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MebelTypeRepository extends JpaRepository<MebelTypeEntity, Long> {
+    boolean existsByTitle(String title);
 }

@@ -18,4 +18,8 @@ public class MebelTypeEntity {
     private Long id;
 
     private String title;
+
+    public MebelTypeEntity(String title) {
+        this.title = title;
+    }
 }

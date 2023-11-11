@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FurnitureTypeRepository extends JpaRepository<FurnitureTypeEntity, Long> {
+    boolean existsByTitle(String title);
 }

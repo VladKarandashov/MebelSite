@@ -18,4 +18,8 @@ public class MaterialEntity {
     private Long id;
 
     private String title;
+
+    public MaterialEntity(String title) {
+        this.title = title;
+    }
 }

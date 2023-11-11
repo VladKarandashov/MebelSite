@@ -18,4 +18,8 @@ public class ColorEntity {
     private Long id;
 
     private String title;
+
+    public ColorEntity(String title) {
+        this.title = title;
+    }
 }
