@@ -41,7 +41,18 @@ public class EditorService {
 
     public MebelEntity processMebelEntity(Long id) {
         if (id == 0) {
-            return MebelEntity.builder().mebelType(new MebelTypeEntity()).color(new ColorEntity()).furnitureBrand(new FurnitureBrandEntity()).furnitureType(new FurnitureTypeEntity()).material(new MaterialEntity()).build();
+            return MebelEntity.builder()
+                    .title("-")
+                    .width(1.0)
+                    .height(1.0)
+                    .length(1.0)
+                    .productionTimeDays(1)
+                    .mebelType(new MebelTypeEntity())
+                    .color(new ColorEntity())
+                    .furnitureBrand(new FurnitureBrandEntity())
+                    .furnitureType(new FurnitureTypeEntity())
+                    .material(new MaterialEntity())
+                    .build();
         } else {
             var mebelEntity = mebelRepository.findById(id).orElseThrow();
             if (mebelEntity.getMebelType() == null) mebelEntity.setMebelType(new MebelTypeEntity());

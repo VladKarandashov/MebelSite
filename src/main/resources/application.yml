@@ -13,3 +13,7 @@ spring:
     check-template-location: false
 server:
   port: 8080
+
+springdoc:
+  api-docs:
+    path: /api-docs

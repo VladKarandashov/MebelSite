@@ -98,38 +98,108 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="title">Название (с большой буквы или цифры)</label><br>
+                        <label for="title">* Название (с большой буквы или цифры) до 50 знаков</label><br>
                         <input id="title" title="начните с большой буквы или цифры" name="title"
-                               pattern="[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}" required type="text"
-                               th:field="${mebel.title}"/>
+                               pattern="[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9 ]{0,50}" required type="text"
+                               maxlength="50" th:field="${mebel.title}"
+                        />
+                        <script>
+                            const titleInput = document.getElementById('title');
+
+                            titleInput.addEventListener('input', function () {
+                                const value = this.value.trim();
+
+                                // Проверка на соответствие паттерну
+                                if (!value.match(this.pattern)) {
+                                    this.style.backgroundColor = 'red';
+                                } else {
+                                    this.style.backgroundColor = '';
+                                }
+                            });
+                        </script>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="width">Ширина, см</label><br>
-                        <input id="width" name="width" type="number" required th:field="${mebel.width}" min="0"
-                               max="9999"/>
+                        <label for="width">* Ширина, см (до 10 метров)</label><br>
+                        <input id="width" name="width" type="number" required th:field="${mebel.width}" min="1" max="1000"/>
+                        <script>
+                            let widthInput = document.getElementById('width');
+
+                            widthInput.addEventListener('input', function() {
+                                let value = parseFloat(this.value);
+
+                                // Проверка на минимальное и максимальное значение
+                                if (value < 1 || value > 1000 || isNaN(value)) {
+                                    this.style.backgroundColor = 'red';
+                                } else {
+                                    this.style.backgroundColor = '';
+                                }
+                            });
+                        </script>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="height">Высота, см</label><br>
-                        <input id="height" name="height" type="number" required th:field="${mebel.height}" min="0"
-                               max="9999"/>
+                        <label for="height">* Высота, см (до 10 метров)</label><br>
+                        <input id="height" name="height" type="number" required th:field="${mebel.height}" min="1"
+                               max="1000"/>
+                        <script>
+                            let widthInput = document.getElementById('height');
+
+                            widthInput.addEventListener('input', function() {
+                                let value = parseFloat(this.value);
+
+                                // Проверка на минимальное и максимальное значение
+                                if (value < 1 || value > 1000 || isNaN(value)) {
+                                    this.style.backgroundColor = 'red';
+                                } else {
+                                    this.style.backgroundColor = '';
+                                }
+                            });
+                        </script>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="length">Длина, см</label><br>
-                        <input id="length" name="length" type="number" required th:field="${mebel.length}" min="0"
-                               max="9999"/>
+                        <label for="length">* Длина, см (до 10 метров)</label><br>
+                        <input id="length" name="length" type="number" required th:field="${mebel.length}" min="1"
+                               max="1000"/>
+                        <script>
+                            let widthInput = document.getElementById('length');
+
+                            widthInput.addEventListener('input', function() {
+                                let value = parseFloat(this.value);
+
+                                // Проверка на минимальное и максимальное значение
+                                if (value < 1 || value > 1000 || isNaN(value)) {
+                                    this.style.backgroundColor = 'red';
+                                } else {
+                                    this.style.backgroundColor = '';
+                                }
+                            });
+                        </script>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="productionTimeDays">Требуется дней на выпуск</label><br>
+                        <label for="productionTimeDays">* Требуется дней на выпуск (до 140 дней)</label><br>
                         <input id="productionTimeDays" name="productionTimeDays" type="number"
-                               th:field="${mebel.productionTimeDays}" min="0" max="60" required/>
+                               th:field="${mebel.productionTimeDays}" min="1" max="140" required/>
+                        <script>
+                            let widthInput = document.getElementById('productionTimeDays');
+
+                            widthInput.addEventListener('input', function() {
+                                let value = parseFloat(this.value);
+
+                                // Проверка на минимальное и максимальное значение
+                                if (value < 1 || value > 140 || isNaN(value)) {
+                                    this.style.backgroundColor = 'red';
+                                } else {
+                                    this.style.backgroundColor = '';
+                                }
+                            });
+                        </script>
                     </td>
                 </tr>
                 <tr>
@@ -166,7 +236,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="furnitureBrand">брэнд фурнитуры</label><br>
+                        <label for="furnitureBrand">Брэнд фурнитуры</label><br>
                         <select size="1" id="furnitureBrand" name="furnitureBrand">
                             <option th:value="0">Выбрать</option>
                             <option th:each="furnitureBrand : ${furnitureBrands}"
@@ -182,7 +252,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="furnitureType">тип фурнитуры</label><br>
+                        <label for="furnitureType">Тип фурнитуры</label><br>
                         <select size="1" id="furnitureType" name="furnitureType">
                             <option th:value="0">Выбрать</option>
                             <option th:each="furnitureType : ${furnitureTypes}"
@@ -198,7 +268,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="material">тип фурнитуры</label><br>
+                        <label for="material">Материал</label><br>
                         <select size="1" id="material" name="material">
                             <option th:value="0">Выбрать</option>
                             <option th:each="material : ${materials}"
@@ -229,9 +299,9 @@
 </body>
 <script>
     async function onClickPlus(url, idSelect) {
-        let title = prompt("Введите новое значение (с большой буквы или цифры):");
-        if ((!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}$/.test(title)) || title === null || title === "") {
-            alert("Введите правильное значение (с большой буквы или цифры)")
+        let title = prompt("Введите новое значение (с большой буквы или цифры) до 50 знаков:");
+        if ((!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,50}$/.test(title)) || title === null || title === "") {
+            alert("Введите правильное значение (с большой буквы или цифры) до 50 знаков")
             return;
         }
         const res = await sendPostRequest(url, title);
@@ -352,10 +422,30 @@
 
         const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
         const titleValue = titleElement.value
+        if ((!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9 ]{0,50}$/.test(titleValue)) || titleValue === null || titleValue === "") {
+            alert("Введите правильное название (с большой буквы или цифры) до 50 символов")
+            return;
+        }
         const widthValue = widthElement.value
+        if (widthValue<1 || widthValue>1000) {
+            alert("Введите правильную ширину от 1 до 1000 см")
+            return;
+        }
         const heightValue = heightElement.value
+        if (heightValue<1 || heightValue>1000) {
+            alert("Введите правильную высоту от 1 до 1000 см")
+            return;
+        }
         const lengthValue = lengthElement.value
+        if (lengthValue<1 || lengthValue>1000) {
+            alert("Введите правильную длину от 1 до 1000 см")
+            return;
+        }
         const productionTimeDaysValue = productionTimeDaysElement.value
+        if (productionTimeDaysValue<1 || productionTimeDaysValue>1000) {
+            alert("Введите правильное время изготовления от 1 до 140 дней")
+            return;
+        }
 
         const mebelTypeIdValue = mebelTypeElement.value
         const colorIdValue = colorElement.value

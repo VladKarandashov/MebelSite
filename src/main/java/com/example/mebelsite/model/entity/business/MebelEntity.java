@@ -28,11 +28,11 @@ public class MebelEntity {
 
     private Integer productionTimeDays;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mebel_type_id", referencedColumnName = "id")
     private MebelTypeEntity mebelType;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private ColorEntity color;
 
@@ -44,7 +44,7 @@ public class MebelEntity {
     @JoinColumn(name = "furniture_type_id", referencedColumnName = "id")
     private FurnitureTypeEntity furnitureType;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "material_id", referencedColumnName = "id")
     private MaterialEntity material;
 }
