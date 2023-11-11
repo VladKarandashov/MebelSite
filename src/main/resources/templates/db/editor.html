@@ -293,7 +293,7 @@
         const accept = confirm("Хотите удалить эту запись?");
         if(accept===false) return;
 
-        const idElement = document.getElementById("productID");
+        const idElement = document.getElementById("mebelID");
         const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
         if (idValue === "0") return;
         const data = {
@@ -305,7 +305,7 @@
     async function sendDeleteRequest(data) {
         console.log("Функция удаления вызвана")
         try {
-            const response = await fetch("/product/delete", {
+            const response = await fetch("/mebel/delete", {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
@@ -419,7 +419,7 @@
     async function sendSaveRequest(data) {
         console.log("Функция сохранения вызвана")
         try {
-            const response = await fetch("/product/save", {
+            const response = await fetch("/mebel/save", {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {

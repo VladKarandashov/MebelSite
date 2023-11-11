@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/miniCreate")
 @RequiredArgsConstructor
-public class MiniCreateRestController {
+public class MiniCreateController {
 
     private final MiniCreateService miniCreateService;
 

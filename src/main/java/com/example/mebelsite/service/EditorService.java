@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class EditorService {
 
     private final MebelRepository mebelRepository;
+
     private final MebelTypeRepository mebelTypeRepository;
     private final ColorRepository colorRepository;
     private final FurnitureBrandRepository furnitureBrandRepository;

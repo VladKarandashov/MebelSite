@@ -37,7 +37,7 @@ public class ExportService {
         String currentDateTimeString = currentDateTime.format(formatter);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "products " + currentDateTimeString + ".json")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "mebel " + currentDateTimeString + ".json")
                 .contentLength(resource.contentLength())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(resource);
