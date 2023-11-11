@@ -28,23 +28,23 @@ public class MebelEntity {
 
     private Integer productionTimeDays;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "mebel_type_id", referencedColumnName = "id")
     private MebelTypeEntity mebelType;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private ColorEntity color;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "furniture_brand_id", referencedColumnName = "id")
     private FurnitureBrandEntity furnitureBrand;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "furniture_type_id", referencedColumnName = "id")
     private FurnitureTypeEntity furnitureType;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "material_id", referencedColumnName = "id")
     private MaterialEntity material;
 }

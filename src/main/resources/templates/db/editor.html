@@ -9,7 +9,7 @@
 <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
 <div id="nav-placeholder"></div>
 <script>
-    $.get("/navbar", function(data){
+    $.get("/navbar", function (data) {
         $("#nav-placeholder").replaceWith(data);
     });
 </script>
@@ -107,25 +107,29 @@
                 <tr>
                     <td style="text-align: center">
                         <label for="width">Ширина, см</label><br>
-                        <input id="width" name="width" type="number" required th:field="${mebel.width}" min="0" max="9999"/>
+                        <input id="width" name="width" type="number" required th:field="${mebel.width}" min="0"
+                               max="9999"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <label for="height">Высота, см</label><br>
-                        <input id="height" name="height" type="number" required th:field="${mebel.height}" min="0" max="9999"/>
+                        <input id="height" name="height" type="number" required th:field="${mebel.height}" min="0"
+                               max="9999"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <label for="length">Длина, см</label><br>
-                        <input id="length" name="length" type="number" required th:field="${mebel.length}" min="0" max="9999"/>
+                        <input id="length" name="length" type="number" required th:field="${mebel.length}" min="0"
+                               max="9999"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <label for="productionTimeDays">Требуется дней на выпуск</label><br>
-                        <input id="productionTimeDays" name="productionTimeDays" type="number" th:field="${mebel.getProductionTimeDays()}" min="0" max="60" required/>
+                        <input id="productionTimeDays" name="productionTimeDays" type="number"
+                               th:field="${mebel.productionTimeDays}" min="0" max="60" required/>
                     </td>
                 </tr>
                 <tr>
@@ -216,7 +220,7 @@
 <!--footer bar-->
 <div id="nav-placeholder-footer"></div>
 <script>
-    $.get("/footer", function(data){
+    $.get("/footer", function (data) {
         $("#nav-placeholder-footer").replaceWith(data);
     });
 </script>
@@ -291,7 +295,7 @@
 <script>
     async function onClickDelete() {
         const accept = confirm("Хотите удалить эту запись?");
-        if(accept===false) return;
+        if (accept === false) return;
 
         const idElement = document.getElementById("mebelID");
         const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
@@ -302,6 +306,7 @@
         const res = await sendDeleteRequest(data);
         window.location.href = '/editor';
     }
+
     async function sendDeleteRequest(data) {
         console.log("Функция удаления вызвана")
         try {
@@ -328,92 +333,61 @@
 <script>
     async function onClickSave() {
         const accept = confirm("Хотите сохранить изменения?");
-        if(accept===false) return;
+        if (accept === false) return;
 
-        const idElement = document.getElementById("productID");
+        const idElement = document.getElementById("mebelID");
         const titleElement = document.getElementById("title");
-        const weightElement = document.getElementById("weight");
-        const dateElement = document.getElementById("date");
-        const warrantyPeriodElement = document.getElementById("warrantyPeriod");
 
-        const productTypeElement = document.getElementById("productType");
-        const productLineElement = document.getElementById("productLine");
-        const deliveryTypeElement = document.getElementById("deliveryType");
-        const warrantyTypeElement = document.getElementById("warrantyType");
+        const widthElement = document.getElementById("width");
+        const heightElement = document.getElementById("height");
+        const lengthElement = document.getElementById("length");
+
+        const productionTimeDaysElement = document.getElementById("productionTimeDays");
+
+        const mebelTypeElement = document.getElementById("mebelType");
+        const colorElement = document.getElementById("color");
+        const furnitureBrandElement = document.getElementById("furnitureBrand");
+        const furnitureTypeElement = document.getElementById("furnitureType");
+        const materialElement = document.getElementById("material");
 
         const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
         const titleValue = titleElement.value
-        const weightValue = weightElement.value
-        const dateValue = dateElement.value
-        const warrantyPeriodValue = warrantyPeriodElement.value
+        const widthValue = widthElement.value
+        const heightValue = heightElement.value
+        const lengthValue = lengthElement.value
+        const productionTimeDaysValue = productionTimeDaysElement.value
 
-        const productTypeIdValue = productTypeElement.value
-        const productLineIdValue = productLineElement.value
-        const deliveryTypeIdValue = deliveryTypeElement.value
-        const warrantyTypeIdValue = warrantyTypeElement.value
+        const mebelTypeIdValue = mebelTypeElement.value
+        const colorIdValue = colorElement.value
+        const furnitureBrandIdValue = furnitureBrandElement.value
+        const furnitureTypeIdValue = furnitureTypeElement.value
+        const materialIdValue = materialElement.value
 
-        let fieldError = false;
-        if(/[A-ZА-Я0-9]/.test(titleValue[0]) === false || titleValue === ''){
-            fieldError = true
-            titleElement.className = 'empty_field'
-        }
-        else{
-            fieldError = false
-            titleElement.className = ''
-        }
-        if(/^\d+(\.\d+)*$/.test(weightValue) === false || 0 > weightValue || weightValue > 50 || weightValue === ''){
-            fieldError = true
-            weightElement.className = 'empty_field'
-        }
-        else{
-            fieldError = false
-            weightElement.className = ''
-        }
 
-        if(0 > warrantyPeriodValue || warrantyPeriodValue > 50 || warrantyPeriodValue === ''){
-            fieldError = true
-            warrantyPeriodElement.className = 'empty_field'
-        }
-        else{
-            fieldError = false
-            warrantyPeriodElement.className = ''
-        }
-        if(dateValue === ''){
-            fieldError = true
-            dateElement.className = 'empty_field'
-        }
-        else{
-            fieldError = false
-            dateElement.className = ''
-        }
+        const data = {
+            id: idValue,
+            title: titleValue,
+            width: widthValue,
+            height: heightValue,
+            length: lengthValue,
+            productionTimeDays: productionTimeDaysValue,
 
-        if(fieldError === true){
-            alert("Проверьте правильность ввода данных!")
+            mebelType: mebelTypeIdValue,
+            color: colorIdValue,
+            furnitureBrand: furnitureBrandIdValue,
+            furnitureType: furnitureTypeIdValue,
+            material: materialIdValue
+        };
+
+        const res = await sendSaveRequest(data);
+
+        console.log(res)
+        if (res == null) {
+            alert("Возникла проблема с вашими полями")
+            return;
         }
-        else{
-            const data = {
-                id: idValue,
-                title: titleValue,
-                weight: weightValue,
-                date: dateValue,
-                warrantyPeriod: warrantyPeriodValue,
-
-                productType: productTypeIdValue,
-                productLine: productLineIdValue,
-                deliveryType: deliveryTypeIdValue,
-                warrantyType: warrantyTypeIdValue,
-            };
-
-            const res = await sendSaveRequest(data);
-
-            console.log(res)
-            if (res == null) {
-                alert("Возникла проблема с вашими полями")
-                return;
-            }
-            console.log("reboot")
-            window.location.href = '/editor/'+res.id;
-        }
+        console.log("reboot")
+        window.location.href = '/editor/' + res.id;
     }
 
     async function sendSaveRequest(data) {

@@ -36,27 +36,32 @@
     <tr>
         <th onclick="sortTable(0)">ID</th>
         <th onclick="sortTable(1)">Название</th>
-        <th onclick="sortTable(2)">Вес</th>
-        <th onclick="sortTable(3)">Дата</th>
-        <th onclick="sortTable(4)">Срок гарантии</th>
-        <th onclick="sortTable(5)">Тип гарантии</th>
-        <th onclick="sortTable(6)">Тип продукта</th>
-        <th onclick="sortTable(7)">Директор линии</th>
-        <th onclick="sortTable(8)">Тип доставки</th>
+        <th onclick="sortTable(2)">Ширина</th>
+        <th onclick="sortTable(3)">Высота</th>
+        <th onclick="sortTable(4)">Длина</th>
+        <th onclick="sortTable(5)">Дней на изготовление</th>
+
+        <th onclick="sortTable(6)">Тип мебели</th>
+        <th onclick="sortTable(7)">Цвет</th>
+        <th onclick="sortTable(8)">Производитель фурнитуры</th>
+        <th onclick="sortTable(9)">Тип фурнитуры</th>
+        <th onclick="sortTable(10)">Материал</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.id}"></td>
-        <td th:text="${product.title}"></td>
-        <td th:text="${product.weight}"></td>
-        <td th:text="${product.date}"></td>
-        <td th:text="${product.warrantyPeriod}"></td>
+    <tr th:each="mebel : ${mebelList}">
+        <td th:text="${mebel.id}"></td>
+        <td th:text="${mebel.title}"></td>
+        <td th:text="${mebel.width}"></td>
+        <td th:text="${mebel.height}"></td>
+        <td th:text="${mebel.length}"></td>
+        <td th:text="${mebel.productionTimeDays}"></td>
 
-        <td th:text="${product.warrantyType != null} ? ${product.warrantyType.title} : '-'"></td>
-        <td th:text="${product.productType != null} ? ${product.productType.title} : '-'"></td>
-        <td th:text="${product.productLine != null} ? ${product.productLine.title} : '-'"></td>
-        <td th:text="${product.deliveryType != null} ? ${product.deliveryType.title} : '-'"></td>
+        <td th:text="${mebel.mebelType != null} ? ${mebel.mebelType.title} : '-'"></td>
+        <td th:text="${mebel.color != null} ? ${mebel.color.title} : '-'"></td>
+        <td th:text="${mebel.furnitureBrand != null} ? ${mebel.furnitureBrand.title} : '-'"></td>
+        <td th:text="${mebel.furnitureType != null} ? ${mebel.furnitureType.title} : '-'"></td>
+        <td th:text="${mebel.material != null} ? ${mebel.material.title} : '-'"></td>
     </tr>
     </tbody>
 </table>
