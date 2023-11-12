@@ -13,5 +13,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/navbar").setViewName("/components/navigationBar");
         registry.addViewController("/footer").setViewName("/components/floor");
+
+
     }
 }

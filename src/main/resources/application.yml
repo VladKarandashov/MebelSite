@@ -5,9 +5,9 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:postgresql://92.53.115.27:5432/default_db
+    url: jdbc:postgresql://185.233.187.153:5432/default_db
     username: gen_user
-    password: MGCCpdG4oidy
+    password: 3sNCIzHQTwKxl
 
   thymeleaf:
     check-template-location: false
