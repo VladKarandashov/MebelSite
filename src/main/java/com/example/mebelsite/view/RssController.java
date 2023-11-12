@@ -35,14 +35,11 @@ public class RssController {
             });
         }
         model.addAttribute("news", news);
-        return "rss/rss";
-    }
 
-    @GetMapping("/rss/urls")
-    public String getRssUrlsHTML(Model model) {
-        var urls = rssUrlRepository.findAll();
-        model.addAttribute("urls", urls);
-        return "rss/rssUrls";
+        var urlsLinks = rssUrlRepository.findAll();
+        model.addAttribute("urls", urlsLinks);
+
+        return "rss/rss";
     }
 
     @GetMapping("/rss/new")

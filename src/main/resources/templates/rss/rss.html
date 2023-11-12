@@ -13,47 +13,88 @@
         $("#nav-placeholder").replaceWith(data);
     });
 </script>
-<script>
-    function checkJSessionID() {
-        var cookies = document.cookie.split(";"); // Получаем все куки
-
-        // Проверяем каждую куку
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-
-            // Если кука с именем JSESSIONID найдена
-            if (cookie.indexOf("JSESSIONID=") === 0) {
-                // Создаем кнопки
-                var editorButton = document.createElement("button");
-                editorButton.innerHTML = "Редактор rss лент";
-
-                var newsButton = document.createElement("button");
-                newsButton.innerHTML = "Новая новость";
-
-                // Устанавливаем функции обработчики события нажатия кнопки
-                editorButton.onclick = function() {
-                    window.location.href = "/rss/urls";
-                };
-
-                newsButton.onclick = function() {
-                    window.location.href = "/rss/new";
-                };
-
-                // Добавляем кнопки на страницу
-                document.body.appendChild(editorButton);
-                document.body.appendChild(newsButton);
-
-                break; // Завершаем цикл, так как уже найдена кука JSESSIONID
-            }
-        }
-    }
-</script>
 <br>
 <!--end of Navigation bar-->
 
 <h1>Новостная лента</h1>
 <br>
-<script>checkJSessionID()</script>
+<h2>Добавленные RSS ленты</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>URL</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="url : ${urls}">
+        <td th:text="${url.id}"></td>
+        <td th:text="${url.url}"></td>
+        <td>
+            <button type="button" th:attr="onclick=|deleteUrl('${url.id}')|">Удалить</button>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    function deleteUrl(urlId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', '/rss/urls/'+urlId, true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    location.reload(); // Перезагрузка страницы после успешного удаления
+                } else {
+                    console.error('Ошибка при удалении ссылки:', xhr.statusText);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+<hr>
+<br>
+<h2>Добавить новую rss ленту</h2>
+
+<form>
+    <label for="url">Ссылка на rss-ленту: </label>
+    <input type="text" id="url" name="url" minlength="1" maxlength="243" required><br>
+</form>
+
+<button onclick="createRssLenta()">Добавить</button>
+<script>
+    function createRssLenta() {
+        var url = document.getElementById("url").value;
+
+        if (url === '') {
+            alert("Ссылка не может быть пустой")
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/rss/urls", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    window.location.href = '/rss';
+                } else {
+                    alert("При создании rss-ленты возникла ошибка");
+                }
+            }
+        };
+
+        var data = JSON.stringify({
+            url: url
+        });
+        xhr.send(data);
+    }
+</script>
 <br>
 <hr>
 
