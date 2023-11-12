@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о фирме</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function (data) {
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<h1>Информация о фирме</h1>
+<br>
+<p>
+    Данная сайт был создан для хранения/редактирования информации о <br>
+    мебели, а также быстром поиске продукции по параметрам. <br>
+    Сайт содержит описание предметной области и служит верным помощником в учёте продукции. <br>
+    Также представлен блок новостей и раздел API. <br>
+    Работу выполнила студентка группы БИЗ-Б20 - Ярослава Сакова
+</p>
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+</body>
+</html>
