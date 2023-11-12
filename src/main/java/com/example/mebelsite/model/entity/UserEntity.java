@@ -20,6 +20,8 @@ import java.util.Set;
 @Table(name = "sec_user")
 public class UserEntity implements UserDetails {
 
+    public static final Role ROLE_USER = new Role("ROLE_USER");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,7 +46,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(new Role("ROLE_USER"));
+        return Set.of(ROLE_USER);
     }
 
     @Override

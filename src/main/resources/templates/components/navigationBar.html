@@ -74,5 +74,27 @@
     </ul>
   </div>
 </nav>
+<script>
+  // Создаем функцию для выполнения запроса
+  function checkLogin() {
+    // Выполняем GET запрос на /checkLogin
+    fetch('/checkLogin')
+            .then(response => response.json())
+            .then(data => {
+              // Если ответ равен true, то меняем элемент на странице
+              if (data === true) {
+                const authButton = document.getElementById("authButton");
+                authButton.href = "/logout";
+                authButton.innerText = "Выйти";
+              }
+            })
+            .catch(error => {
+              console.error('Произошла ошибка:', error);
+            });
+  }
+
+  // Вызываем функцию checkLogin, чтобы выполнить запрос при загрузке страницы
+  checkLogin();
+</script>
 </body>
 </html>
