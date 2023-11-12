@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Партнеры</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<h1>Наши отечественные партнёры</h1>
+<hr>
+
+<br> <br>
+
+<p class="p">
+    <img width="500px," src="/img/partners/hoff.png" alt="hoff-лого"> <br>
+    ООО "HOFF" <br>
+    Адрес: 123290, г. Москва, 1-й Магистральный проезд, д.11, стр.1, пом. II, этаж 2, ком. 54 <br>
+    Телефон: +7 (495) 739-02-81 <br>
+    Сайт: <a href="https://hoff.ru/">hoff.ru</a> <br>
+</p>
+
+<p class="p">
+    <img width="500px," src="/img/partners/artis.png" alt="артис-лого"> <br>
+    ООО "АРТИС" <br>
+    Г МОСКВА,0,ПРОСП МИРА, Д 112, СТР 1 <br>
+    Телефон: 8 (499) 653-66-25 <br>
+    Сайт: <a href="https://www.artis21.ru/">artis21.ru</a> <br>
+</p>
+<br>
+<br>
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+</body>
+</html>
