@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API</title>
+    <script>
+        function filterAttributes(data) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const filteredData = [];
+
+            for (let i = 0; i < data.length; i++) {
+                const obj = data[i];
+                const filteredObj = {};
+
+                for (let j = 0; j < checkboxes.length; j++) {
+                    const checkbox = checkboxes[j];
+
+                    if (checkbox.checked) {
+                        const attribute = checkbox.name.replace('Enabled', '');
+                        filteredObj[attribute] = obj[attribute];
+                    }
+                }
+
+                filteredData.push(filteredObj);
+            }
+
+            return filteredData;
+        }
+
+        function displayTable(data) {
+            // Получаем элемент таблицы со страницы
+            var table = document.getElementById("table");
+
+            // Очистка таблицы перед отображением новых данных
+            table.innerHTML = "";
+
+            // Создаем заголовок таблицы
+            var thead = document.createElement("thead");
+            var tr = document.createElement("tr");
+
+            // Получаем поля из первого объекта списка данных
+            if (data[0] !== null && data[0] !== undefined) {
+                var fields = Object.keys(data[0]);
+            } else {
+                return;
+            }
+
+
+            // Создаем ячейки заголовка и добавляем их в строку заголовка
+            fields.forEach(function(field) {
+                var th = document.createElement("th");
+
+                // Если поле имеет формат { "id": 1, "title": "Иванов И.И." }, берем значение из поля "title"
+                if (field.charAt(0).toLowerCase() === "title") {
+                    th.textContent = "title";
+                } else {
+                    th.textContent = field;
+                }
+
+                tr.appendChild(th);
+            });
+
+            // Добавляем строку заголовка в заголовок таблицы
+            thead.appendChild(tr);
+
+            // Добавляем заголовок таблицы в таблицу
+            table.appendChild(thead);
+
+            // Создаем тело таблицы
+            var tbody = document.createElement("tbody");
+
+            console.log(fields)
+            console.log(data)
+
+            // Перебираем каждый объект в списке данных
+            data.forEach(function(item) { // item - это объект продукта
+                var tr = document.createElement("tr");
+
+                console.log(item)
+
+                // Перебираем поля объекта и создаем ячейки с соответствующими значениями
+                fields.forEach(function(field) {
+                    var td = document.createElement("td");
+
+                    console.log(field)
+
+                    // Если поле имеет формат { "id": 1, "title": "Иванов И.И." }, берем значение из поля "title"
+                    if (item !== null && item.hasOwnProperty(field)) {
+                        if (item[field] !== null && item[field].hasOwnProperty("title")) {
+                            td.textContent = item[field]["title"];
+                        } else {
+                            td.textContent = item[field];
+                        }
+                    } else {
+                        td.textContent = "-";
+                    }
+
+                    tr.appendChild(td);
+                });
+
+                // Добавляем строку с данными в тело таблицы
+                tbody.appendChild(tr);
+            });
+
+            // Добавляем тело таблицы в таблицу
+            table.appendChild(tbody);
+        }
+
+        function searchProducts() {
+            var xhr = new XMLHttpRequest();
+
+            var mebelType = document.getElementById("mebelType").value
+            var color = document.getElementById("color").value
+            var furnitureType = document.getElementById("furnitureType").value
+
+            var path = '/api/search?'
+            if (mebelType !== "0") path += "idMebelType="+mebelType+"&";
+            if (color !== "0") path += "idColor="+color+"&";
+            if (furnitureType !== "0") path += "idFurnitureType="+furnitureType;
+            console.log(path)
+
+            xhr.open('GET', path, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    const filteredResponse = filterAttributes(response);
+                    displayTable(filteredResponse);
+                    document.getElementById('result3').value = JSON.stringify(filteredResponse, null, 4);
+                    document.getElementById("countRecords").innerHTML = "Получено "+response.length+" продуктов"
+                }
+            };
+            xhr.send();
+        }
+    </script>
+    <style>
+        textarea {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function (data) {
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>API выгрузки БД в виде файла (бэкап)</h1>
+Для создания резервных копий крайне необходим API для получения файла с базой мебели
+<br>
+<h3>GET /export/file</h3>
+<button onclick="exportProducts()">Резервная копия</button>
+<hr>
+<br>
+
+<h1>API поиска с возможностью выбрать атрибуты</h1>
+<p>
+    API для поиска мебели по типу и/или цвету и/или фурнитуре. <br>
+    Все критерии передаются через query params. <br>
+    Если нам не важен какой-то из критериев - его нужно просто не передавать. <br>
+    <br>
+    Этот функционал можно протестировать ниже. <br>
+    Обратите внимание, что функционал "связанного" поиска не может быть здесь реализован, <br>
+    так как вызывающая сторона может посылать любые параметры и сервер не в силах этому помешать. <br>
+    API может вернуть пустой список!!!
+</p>
+<h3>GET /search?mebelType={1}&color={2}&furnitureType={3}</h3>
+<table class="center" id="myTable">
+    <thead>
+    <tr>
+        <th>Категория</th>
+        <th>Поле выбора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><label for="mebelType">Тип продукта:</label></td>
+        <td>
+            <select id="mebelType" name="mebelType">
+                <option th:value="0">Любой</option>
+                <option th:each="mebelType : ${mebelTypes}"
+                        th:value="${mebelType.id}"
+                        th:selected="${mebelType.id == idMebelType}"
+                        th:text="${mebelType.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="color">Тип доставки:</label></td>
+        <td>
+            <select id="color" name="color">
+                <option th:value="0">Любой</option>
+                <option th:each="color : ${colors}"
+                        th:value="${color.id}"
+                        th:selected="${color.id == idColor}"
+                        th:text="${color.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="furnitureType">Тип гарантии:</label></td>
+        <td>
+            <select id="furnitureType" name="furnitureType">
+                <option th:value="0">Любой</option>
+                <option th:each="furnitureType : ${furnitureTypes}"
+                        th:value="${furnitureType.id}"
+                        th:selected="${furnitureType.id == idFurnitureType}"
+                        th:text="${furnitureType.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<label for="idEnabled">ID</label>
+<input type="checkbox" id="idEnabled" name="idEnabled" checked>
+<label for="titleEnabled">Title</label>
+<input type="checkbox" id="titleEnabled" name="titleEnabled" checked>
+
+<label for="widthEnabled">Width</label>
+<input type="checkbox" id="widthEnabled" name="widthEnabled" checked>
+<label for="heightEnabled">Height</label>
+<input type="checkbox" id="heightEnabled" name="heightEnabled" checked>
+<label for="lengthEnabled">Length</label>
+<input type="checkbox" id="lengthEnabled" name="lengthEnabled" checked>
+
+<label for="productionTimeDaysEnabled">ProductionTimeDays</label>
+<input type="checkbox" id="productionTimeDaysEnabled" name="productionTimeDaysEnabled" checked>
+
+<label for="mebelTypeEnabled">MebelType</label>
+<input type="checkbox" id="mebelTypeEnabled" name="mebelTypeEnabled" checked>
+<label for="colorEnabled">Color</label>
+<input type="checkbox" id="colorEnabled" name="colorEnabled" checked>
+<label for="furnitureBrandEnabled">FurnitureBrand</label>
+<input type="checkbox" id="furnitureBrandEnabled" name="furnitureBrandEnabled" checked>
+<label for="furnitureTypeEnabled">FurnitureType</label>
+<input type="checkbox" id="furnitureTypeEnabled" name="furnitureTypeEnabled" checked>
+<label for="materialEnabled">Material</label>
+<input type="checkbox" id="materialEnabled" name="materialEnabled" checked>
+<br>
+<button onclick="searchProducts()">Искать</button>
+<label id="countRecords">Апи не вызывалась</label><br>
+<label for="result3"></label>
+<textarea id="result3" readonly></textarea>
+<hr>
+<table DIR=LTR BORDER id="table"></table>
+
+<br>
+<br>
+<br>
+<br>
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function (data) {
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+</body>
+
+<script>
+    function exportProducts() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/export' + '/file', true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                const blob = new Blob([this.response], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const contentName = xhr.getResponseHeader('Content-Disposition');
+                const filename = contentName.substring(20);
+                console.log(contentName)
+                console.log(filename);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</html>
