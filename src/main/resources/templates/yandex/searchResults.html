@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <meta name="yandex-verification" content="44dd2504d54bf1bf" />
+</head>
+<body>
+
+<!--Navigation bar-->
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>Результаты поиска:</h1>
+<hr>
+<br>
+<div id="ya-site-results" data-bem="{&quot;tld&quot;: &quot;ru&quot;,&quot;language&quot;: &quot;ru&quot;,&quot;encoding&quot;: &quot;&quot;,&quot;htmlcss&quot;: &quot;1.x&quot;,&quot;updatehash&quot;: true}"></div><script type="text/javascript">(function(w,d,c){var s=d.createElement('script'),h=d.getElementsByTagName('script')[0];s.type='text/javascript';s.async=true;s.charset='utf-8';s.src=(d.location.protocol==='https:'?'https:':'http:')+'//site.yandex.net/v2.0/js/all.js';h.parentNode.insertBefore(s,h);(w[c]||(w[c]=[])).push(function(){Ya.Site.Results.init();})})(window,document,'yandex_site_callbacks');</script>
+<br>
+
+<!--footer bar-->
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
+
+</body>
+</html>
