@@ -97,7 +97,8 @@
 </script>
 <br>
 <hr>
-
+<a href="/rss/new"><button>СОЗДАТЬ НОВОСТЬ</button></a>
+<hr>
 <div th:each="news1 : ${news}">
     <h2 th:text="${news1.title}"></h2>
     <p th:text="${news1.description}"></p>
